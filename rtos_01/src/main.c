@@ -44,7 +44,7 @@ static void vTarea2(void *pvParameters)
   actual cantidad de ticks. Luego es manejada por la API de vTaskDelayUntil()*/
 
   for( ;; ) {
-     vPrintString( "Ticks = %d\r\n", xLastWakeTime);
+     print( "Ticks = %d\r\n", xLastWakeTime);
      Board_LED_Toggle(5); //titila "LED 3" ( verde )
 
      /* pasa a READY cada 1 seg. */
