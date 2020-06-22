@@ -25,9 +25,9 @@ void vTask2( void *pvParameters );
 int main( void )
 {
    /* Create one of the two tasks. */
-   xTaskCreate( vTask1, (const char *)"Task 1", 1000, NULL, tskIDLE_PRIORITY+2, NULL );
+   xTaskCreate( vTask1, (const char *)"Task 1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+2, NULL );
    /* Create the other task in exactly the same way. */
-   xTaskCreate( vTask2, (const char *)"Task 2", 1000, NULL, tskIDLE_PRIORITY+1, xTask2Handle);
+   xTaskCreate( vTask2, (const char *)"Task 2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, xTask2Handle);
 
    /* Start the scheduler to start the tasks executing. */
    vTaskStartScheduler();
@@ -45,7 +45,7 @@ void vTask1( void *pvParameters )
 {
    const char *pcTaskName = "Task 1 is running\r\n";
    TickType_t xLastWakeTime;
-   const TickType_t xDelay1000ms = pdMS_TO_TICKS( 1000UL ); //1 seg
+   const TickType_t xDelay1000ms = 100; //1 seg
 
    xLastWakeTime = xTaskGetTickCount(); /* se inicializa la variable con la actual cantidad de ticks. Luego es manejada por la API de vTaskDelayUntil()*/
 
@@ -53,9 +53,11 @@ void vTask1( void *pvParameters )
    for( ;; ){
       /* Print out the name of this task. */
       vPrintString( pcTaskName );
-      if (xLastWakeTime - 100 >= 0){ //aproximadamente cada 1 seg
+
+      if (xTaskGetTickCount() - xLastWakeTime >= xDelay1000ms){ //aproximadamente cada 1 seg
         xLastWakeTime = xTaskGetTickCount();
-        vTaskPrioritySet( xTask2Handle, tskIDLE_PRIORITY + 3 ); //aumenta la prioriodad de la tarea 2 por encima de la tarea 1
+        //printf("%s\n", vTaskPriorityGet( xTask2Handle)); //para debugging
+        vTaskPrioritySet( xTask2Handle, tskIDLE_PRIORITY + 3 ); //aumenta la prioriodad de la tarea 2 por encima de la prioriodad de la tarea 1
       }
     }
 }

@@ -32,8 +32,8 @@ void vApplicationIdleHook( void );
 int main( void )
 {
    /* Create one of the two tasks. */
-   xTaskCreate( vTask1, (const char *)"Task 1", 1000, NULL, PRIO_T1, NULL );
-   xTaskCreate( vTask2, (const char *)"Task 2", 1000, NULL, PRIO_T2, NULL );
+   xTaskCreate( vTask1, (const char *)"Task 1", configMINIMAL_STACK_SIZE, NULL, PRIO_T1, NULL );
+   xTaskCreate( vTask2, (const char *)"Task 2", configMINIMAL_STACK_SIZE, NULL, PRIO_T2, NULL );
    /* Start the scheduler to start the tasks executing. */
    vTaskStartScheduler();
 
@@ -48,13 +48,13 @@ int main( void )
 
 void vTask1( void *pvParameters )
 {
-  const char *pcTaskName = "Task 1 is running. Priority \r\n";
+  const char *pcTaskName = "Task 2 is running. Priority \r\n";
   const TickType_t xDelay500ms = pdMS_TO_TICKS( 500UL ); //500 ms
   UBaseType_t uxPriority;
-  const char *pcTaskPriority;
+  char *pcTaskPriority;
 
   uxPriority = uxTaskPriorityGet( NULL );
-  *pcTaskPriority = (char) uxPriority;
+  pcTaskPriority = (char *) uxPriority;
 
   /* As per most tasks, this task is implemented in an infinite loop. */
   for( ;; ) {
@@ -74,10 +74,10 @@ void vTask2( void *pvParameters )
    const char *pcTaskName = "Task 2 is running. Priority \r\n";
    const TickType_t xDelay500ms = pdMS_TO_TICKS( 500UL ); //500 ms
    UBaseType_t uxPriority;
-   const char *pcTaskPriority;
+   char *pcTaskPriority;
 
    uxPriority = uxTaskPriorityGet( NULL );
-   *pcTaskPriority = (char) uxPriority;
+   pcTaskPriority = (char *) uxPriority;
 
    /* As per most tasks, this task is implemented in an infinite loop. */
    for( ;; ) {
@@ -91,12 +91,13 @@ void vTask2( void *pvParameters )
 }
 /*-----------------------------------------------------------*/
 
-void vApplicationIdleHook( void ){
-  const TickType_t xLastWakeTime = xTaskGetTickCount();
+void vApplicationIdleHook( void )
+{
+  TickType_t xLastWakeTime = xTaskGetTickCount();
   const TickType_t xDelay300ms = 30; //1 seg
 
 
-  if (xLastWakeTime - xDelay300ms >= 0){ //aproximadamente cada 1 seg
+  if (xTaskGetTickCount() - xLastWakeTime >= xDelay300ms){ //aproximadamente cada 1 seg
     xLastWakeTime = xTaskGetTickCount();
     Board_LED_Toggle(2); /* Blue (RGB) */
   }

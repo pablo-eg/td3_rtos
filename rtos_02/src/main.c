@@ -33,7 +33,7 @@ int main( void )
   /* Create the first task at priority 1. The task parameter is not used
   so is set to NULL. The task handle is also not used so likewise is set
   to NULL. */
-  xTaskCreate( vTask1, "Task 1", 1000, NULL, tskIDLE_PRIORITY+1, NULL );
+  xTaskCreate( vTask1, "Task 1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
   /* The task is created at priority 1 _______________________^. */
   /* Start the scheduler so the task starts executing. */
   vTaskStartScheduler();
@@ -52,7 +52,7 @@ void vTask1( void *pvParameters )
   /* Create task 2 at a higher priority. Again the task parameter is not
   used so is set to NULL - BUT this time the task handle is required so
   the address of xTask2Handle is passed as the last parameter. */
-  xTaskCreate( vTask2, "Task 2", 1000, NULL, tskIDLE_PRIORITY+2, &xTask2Handle );
+  xTaskCreate( vTask2, "Task 2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+2, &xTask2Handle );
   /* The task handle is the last parameter ______________________^^^^^^^^^^^^ */
   /* Task 2 has/had the higher priority, so for Task 1 to reach here Task 2
   must have already executed and deleted itself. Delay for 500 milliseconds. */
