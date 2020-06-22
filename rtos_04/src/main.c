@@ -13,9 +13,6 @@ function to get called */
 /* Demo includes. */
 #include "supporting_functions.h"
 
-/* Used as a loop counter to create a very crude delay. */
-#define mainDELAY_LOOP_COUNT            ( 0xffffff )
-
 /* Tasks priority */
 #define PRIO_T1 2
 #define PRIO_T2 1
@@ -94,12 +91,13 @@ void vTask2( void *pvParameters )
 void vApplicationIdleHook( void )
 {
   TickType_t xLastWakeTime = xTaskGetTickCount();
-  const TickType_t xDelay300ms = 30; //1 seg
+  const TickType_t xDelay300ms = 30;
 
-
-  if (xTaskGetTickCount() - xLastWakeTime >= xDelay300ms){ //aproximadamente cada 1 seg
-    xLastWakeTime = xTaskGetTickCount();
-    Board_LED_Toggle(2); /* Blue (RGB) */
+  for(;;){
+    if (xTaskGetTickCount() - xLastWakeTime >= xDelay300ms){
+      xLastWakeTime = xTaskGetTickCount();
+      Board_LED_Toggle(2); /* Blue (RGB) */
+    }
   }
 }
 /*-----------------------------------------------------------*/
