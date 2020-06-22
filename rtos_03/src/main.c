@@ -27,7 +27,7 @@ int main( void )
    /* Create one of the two tasks. */
    xTaskCreate( vTask1, (const char *)"Task 1", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+2, NULL );
    /* Create the other task in exactly the same way. */
-   xTaskCreate( vTask2, (const char *)"Task 2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, xTask2Handle);
+   xTaskCreate( vTask2, (const char *)"Task 2", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, &xTask2Handle);
 
    /* Start the scheduler to start the tasks executing. */
    vTaskStartScheduler();
@@ -57,7 +57,7 @@ void vTask1( void *pvParameters )
       if (xTaskGetTickCount() - xLastWakeTime >= xDelay1000ms){ //aproximadamente cada 1 seg
         xLastWakeTime = xTaskGetTickCount();
         //printf("%s\n", vTaskPriorityGet( xTask2Handle)); //para debugging
-        vTaskPrioritySet( xTask2Handle, tskIDLE_PRIORITY + 3 ); //aumenta la prioriodad de la tarea 2 por encima de la prioriodad de la tarea 1
+        vTaskPrioritySet( xTask2Handle, ( tskIDLE_PRIORITY + 3 ) ); //aumenta la prioriodad de la tarea 2 por encima de la prioriodad de la tarea 1
       }
     }
 }
@@ -72,6 +72,6 @@ void vTask2( void *pvParameters )
       /* Print out the name of this task. */
       vPrintString( pcTaskName );
       Board_LED_Toggle(5);
-      vTaskPrioritySet( NULL, tskIDLE_PRIORITY + 1 ); //disminuye su propia prioridad
+      vTaskPrioritySet( NULL, ( tskIDLE_PRIORITY + 1 ) ); //disminuye su propia prioridad
    }
 }
