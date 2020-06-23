@@ -58,7 +58,7 @@ void vTask1( void *pvParameters )
 
   for( ;; )
   {
-    xStatus = xQueueSend( xQueue, &xValueToSend, 0 );
+    xStatus = xQueueSend( xQueue, &xValueToSend, portMAX_DELAY );
 
     if( xStatus != pdPASS )
     {
@@ -68,7 +68,7 @@ void vTask1( void *pvParameters )
       vPrintString( "Could not send to the queue.\r\n" );
     }
 
-    vPrintString( "vTask1 envie dato a la cola" );
+    vPrintString( "vTask1 envie dato a la cola\r\n" );
   }
 }
 /*-----------------------------------------------------------*/
@@ -80,7 +80,7 @@ void vTask2( void *pvParameters )
 
   for( ;; )
   {
-    xStatus = xQueueSend( xQueue, &xValueToSend, 0 );
+    xStatus = xQueueSend( xQueue, &xValueToSend, portMAX_DELAY );
 
     if( xStatus != pdPASS )
     {
@@ -90,7 +90,7 @@ void vTask2( void *pvParameters )
       vPrintString( "Could not send to the queue.\r\n" );
     }
 
-    vPrintString( "vTask2 envie dato a la cola" );
+    vPrintString( "vTask2 envie dato a la cola\r\r" );
   }
 }
 /*-----------------------------------------------------------*/
@@ -103,7 +103,7 @@ void vTask3( void *pvParameters )
 	while (1){
 		if(xQueueReceive (xQueue , &xTimeOn , portMAX_DELAY) == pdTRUE){
       Board_LED_Set(3, TRUE); //enciende el led amarillo
-      vPrintString( "vTask3 recibi dato de la cola" );
+      vPrintString( "vTask3 recibi dato de la cola\r\n" );
       vTaskDelay(xTimeOn);    //el tiempo enviado por las otras tareas
     }
 
