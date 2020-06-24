@@ -1,3 +1,16 @@
+/* Ejericio 5 - Trabajo Practico 14 - FreeRTOS*/
+
+/* Cree un programa usando FreeRtos que cumpla con las siguientes consignas:
+- Posea las tareas Tarea1, Tarea2 y Tarea3.
+- Las Tareas Tarea1 y Tarea2 deben enviar por cola de mensaje a la Tarea3 el
+tiempo en milisegundos que debe estar encendido el led amarillo e indicarlo por
+puerto serie.
+- La Tarea3 debe leer esos tiempos de la cola a medida que llegan y controlar el
+led en cuestión. Siempre, el tiempo apagado del led es de 500ms. También debe
+indicar por puerto serie sus acciones.
+- Indique que pasa en caso de que el timeout de la escritura en la cola de
+mensajes sea de 300ms. */
+
 #include "stdio.h"
 
 /* FreeRTOS.org includes. */
@@ -123,3 +136,16 @@ static void InitQueue(void)
     while ( 1 ); /* Se queda bloqueado el sistema hasta que venga el técnico de mantenimiento */
   }
 }
+
+
+/* Indique que pasa en caso de que el timeout de la escritura en la cola de
+mensajes sea de 300ms.
+
+Como la cola se llena rapidamente en los primeros milisegundos de ejecución y la
+tarea 3, de mayor prioridad, lee de la cola en un tiempo mayor a 300 ms (ya que
+siempre se bloquea por 500 ms o 1000 ms), xStatus, que recibe lo que devuelve
+xQueueSend, toma periodicamente el valor pdFALSE, por lo que veremos por el
+puerto serie "Could not send to the queue." hasta que la tarea 3 lea de la cola.
+Luego la tarea 1 o 2 escriben en la cola, se llena y el proceso se vuelve a
+repetir.
+*/

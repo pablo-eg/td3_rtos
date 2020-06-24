@@ -1,4 +1,16 @@
-/* configUSE_IDLE_HOOK must be set to 1 in FreeRTOSConfig.h for the idle hook
+/* Ejericio 4 - Trabajo Practico 14 - FreeRTOS*/
+
+/*Cree un programa usando FreeRtos que cumpla con las siguientes consignas:
+- Posea dos tareas, Tarea1 y Tarea2 de distinta prioridad y que sean
+implementadas en la misma función.
+- Ambas tareas deben indicar por puerto serie que están en ejecución y su
+prioridad, luego bloquearse por 500ms.
+- En el tiempo Idle aprovechar para cambiar el estado del led Azul cada 300ms e
+indicarlo por puerto serie. (Idle Hook)
+- Justifique que sucede con los cambios de estado del led en caso que la tarea
+Tarea1 pase a ejecutarse de manera contínua. */
+
+/*IMPORTANTE: configUSE_IDLE_HOOK must be set to 1 in FreeRTOSConfig.h for the idle hook
 function to get called */
 
 #include "stdio.h"
@@ -99,3 +111,15 @@ void vApplicationIdleHook( void )
   }
 }
 /*-----------------------------------------------------------*/
+
+
+/* Justifique que sucede con los cambios de estado del led en caso que la tarea
+Tarea1 pase a ejecutarse de manera contínua.
+
+Si se comenta la línea 74, la tarea 1 pasa a ejecutarse de manera continua.
+Como la prioridad de la tarea 1 es mayor que la de la idle hook, veremos que el
+led nunca parpadea y por el puerto serie solo veremos el mensaje
+"Task 1 is running. Priority 2", ya que la prioridad de la tarea 1 es mayor que
+la de la 2. Al ejecutar la tarea 1 de manera continua lo correcto hubiese sido
+poner una prioridad mayor a la tarea 2.
+*/

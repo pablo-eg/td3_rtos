@@ -1,3 +1,15 @@
+/* Ejericio 3 - Trabajo Practico 14 - FreeRTOS*/
+
+/* Cree un programa usando FreeRtos que cumpla con las siguientes consignas:
+- Posea dos tareas, Tarea1 y Tarea2.
+- La Tarea1, de mayor prioritaridad, debe indicar por puerto serie que está ejecutando
+un bucle busy-waiting.
+- Periódicamente debe aumentar la prioridad de la Tarea2, para que esta pueda
+ejecutarse.
+- La Tarea2 debe cambiar el estado del led verde, indicarlo por puerto serie y disminuir
+su propia prioridad para detener su ejecución. */
+
+
 #include "stdio.h"
 
 /* FreeRTOS.org includes. */

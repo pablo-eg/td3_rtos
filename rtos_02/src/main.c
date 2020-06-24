@@ -1,7 +1,13 @@
-/* Ejercicio 2 del TP 14 RTOS
-* Recordar que INCLUDE_vTaskDelete debe estar seteado en 1 FreeRTOSConfig.h.
-* Por defecto se encuentra en 1.
-*/
+/* Ejericio 2 - Trabajo Practico 14 - FreeRTOS*/
+
+/* Cree un programa usando FreeRtos que cumpla con las siguientes consignas:
+- Posea la tarea Tarea1.
+- La Tarea1 debe crear la Tarea2 cada 500 ms, indicándolo por puerto serie.
+- La Tarea2 debe cambiar el estado del led amarillo, indicarlo por puerto serie y
+terminar. */
+
+/* IMPORTANTE: INCLUDE_vTaskDelete debe estar seteado en 1 FreeRTOSConfig.h.
+Por defecto se encuentra en 1. */
 
 
 #include "stdio.h"

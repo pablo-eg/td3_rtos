@@ -1,3 +1,13 @@
+/* Ejericio 1 - Trabajo Practico 14 - FreeRTOS*/
+
+/* Cree un programa usando FreeRtos que cumpla con las siguientes consignas:
+- Posea dos tareas, Tarea1 y Tarea2, con los niveles de prioridad correspondientes.
+- La Tarea1 debe ejecutarse de manera contínua, indicando este estado a través del
+puerto serie.
+- La Tarea2 debe ser periódica, con período de 1 segundo y debe cambiar el estado del
+led verde e indicarlo a través del puerto serie. Adicionalmente debe indicar los ticks del
+reloj de FreeRtos para asegurarse el período solicitado. */
+
 #include "stdio.h"
 
 /* FreeRTOS.org includes. */
