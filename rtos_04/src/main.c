@@ -45,20 +45,19 @@ int main( void )
 
 void vTask1( void *pvParameters )
 {
-  const char *pcTaskName = "Task 2 is running. Priority \r\n";
+  const char *pcTaskName = "Task 1 is running. Priority ";
   const TickType_t xDelay500ms = pdMS_TO_TICKS( 500UL ); //500 ms
   UBaseType_t uxPriority;
   char *pcTaskPriority;
 
   uxPriority = uxTaskPriorityGet( NULL );
-  pcTaskPriority = (char *) uxPriority;
+  //pcTaskPriority = (char *) uxPriority;
 
   /* As per most tasks, this task is implemented in an infinite loop. */
   for( ;; ) {
      /* Print out the name of this task. */
      vPrintString( pcTaskName );
-     vPrintString( pcTaskPriority );
-     vPrintString( "\r\n" );
+     printf( "%d \r\n", uxPriority );
 
      vTaskDelay( xDelay500ms );
   }
@@ -68,20 +67,19 @@ void vTask1( void *pvParameters )
 
 void vTask2( void *pvParameters )
 {
-   const char *pcTaskName = "Task 2 is running. Priority \r\n";
+   const char *pcTaskName = "Task 2 is running. Priority ";
    const TickType_t xDelay500ms = pdMS_TO_TICKS( 500UL ); //500 ms
    UBaseType_t uxPriority;
    char *pcTaskPriority;
 
    uxPriority = uxTaskPriorityGet( NULL );
-   pcTaskPriority = (char *) uxPriority;
+   //pcTaskPriority = (char *) uxPriority;
 
    /* As per most tasks, this task is implemented in an infinite loop. */
    for( ;; ) {
       /* Print out the name of this task. */
       vPrintString( pcTaskName );
-      vPrintString( pcTaskPriority );
-      vPrintString( "\r\n" );
+      printf( "%d \r\n", uxPriority );
 
       vTaskDelay( xDelay500ms );
    }
