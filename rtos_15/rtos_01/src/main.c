@@ -9,7 +9,8 @@
 *     - La Tarea2 debe estar serializada, y esperar por cada loop de Tarea1,
 *       cambiando el estado del led Azul, cada vez que Tarea1 complete el loop.
 *
-*   Justifique que herramienta de sincronización utilizó*/
+*   Justifique que herramienta de sincronización utilizó
+*/
 
  /*==================[inclusions]=============================================*/
 
@@ -36,7 +37,7 @@ int main(void)
   if( xBinarySemaphore != NULL )
   {
     xTaskCreate( vTask1, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
-  	xTaskCreate( vTask2, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+2, NULL );
+  	xTaskCreate( vTask2, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
 
   	vTaskStartScheduler ();
   }
@@ -54,8 +55,7 @@ static void vTask1 ( void *pvParameters )
    const TickType_t xDelay1000ms = pdMS_TO_TICKS( 1000UL );
 
    for( ;; ) {
-      xSemaphoreTake( xBinarySemaphore, portMAX_DELAY );
-      printf( "vTask1 running\n" );
+      printf( "vTask1 running\r\n" );
       vTaskDelay( xDelay1000ms );
       xSemaphoreGive( xBinarySemaphore );
    }
@@ -66,7 +66,7 @@ static void vTask2(void *pvParameters)
     for( ;; ) {
      xSemaphoreTake( xBinarySemaphore, portMAX_DELAY );
      Board_LED_Toggle(2); /* Blue (RGB) */
-     xSemaphoreGive( xBinarySemaphore );
+     printf( "vTask1 running" );
   }
 }
 
