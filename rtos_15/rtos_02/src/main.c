@@ -46,7 +46,9 @@ int main(void)
   xTaskCreate( vProducer, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
   xTaskCreate( vConsumer, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+2, NULL );
 
-  NVIC_EnableIRQ(RITIMER_IRQn);
+  NVIC_EnableIRQ( RITIMER_IRQn );
+
+  NVIC_SetPriority( RITIMER_IRQn, (1<<__NVIC_PRIO_BITS) -1 );
 
   vTaskStartScheduler ();
 }
@@ -82,7 +84,7 @@ static void vConsumer(void *pvParameters)
 
     if( xQueueReceive ( xQueue, &sElementConsumed, ( TickType_t ) 1 ) == pdTRUE )
     {
-      printf( "Element %d has been consumed", sElementConsumed );
+      printf( "Element %d has been consumed\r\n", sElementConsumed );
       Board_LED_Toggle( 3 ); /* Yellow */
     }
   }
