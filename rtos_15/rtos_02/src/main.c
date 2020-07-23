@@ -36,15 +36,17 @@ void RIT_IRQHandler( void );
 
 int main(void)
 {
-  vInitHardware(); 
-	vInitTimer();
+  vInitHardware();
+  vInitTimer();
   vInitQueue();
 
   vSemaphoreCreateBinary ( xBinarySemaphore );
-  xSemaphoreTake( xBinarySemaphore, 0 );
+  xSemaphoreTake( xBinarySemaphore, ( TickType_t ) 10 );
 
   xTaskCreate( vProducer, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
   xTaskCreate( vConsumer, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
+
+  NVIC_EnableIRQ(RITIMER_IRQn);
 
   vTaskStartScheduler ();
 }
@@ -72,16 +74,17 @@ static void vProducer ( void *pvParameters )
 
 static void vConsumer(void *pvParameters)
 {
-    uint16_t sElementConsumed;
+  uint16_t sElementConsumed;
 
-    for( ;; ) {
-     xSemaphoreTake( xBinarySemaphore, portMAX_DELAY );
-     if(xQueueReceive ( xQueue, &sElementConsumed, 0 ) == pdTRUE )
-     {
-       printf( "Element %d has been consumed", sElementConsumed );
-       Board_LED_Toggle( 3 ); /* Yellow */
-     }
+  for( ;; )
+  {
+    xSemaphoreTake( xBinarySemaphore, portMAX_DELAY );
 
+    if( xQueueReceive ( xQueue, &sElementConsumed, ( TickType_t ) 1 ) == pdTRUE )
+    {
+      printf( "Element %d has been consumed", sElementConsumed );
+      Board_LED_Toggle( 3 ); /* Yellow */
+    }
   }
 }
 
@@ -89,7 +92,8 @@ static void vInitQueue( void )
 {
   xQueue = xQueueCreate ( TAM_COLA, sizeof( uint16_t ) );
 
-  if( xQueue == NULL ){
+  if( xQueue == NULL )
+  {
     Board_LED_Set( 5, TRUE ); /* RED */
     for( ;; );
   }
@@ -97,21 +101,21 @@ static void vInitQueue( void )
 
 static void vInitHardware(void)
 {
-    SystemCoreClockUpdate();
-    Board_Init();
+  SystemCoreClockUpdate();
+  Board_Init();
 }
 
 static void vInitTimer( void )
 {
-	Chip_RIT_Init( LPC_RITIMER );
-	Chip_RIT_SetTimerInterval( LPC_RITIMER, 3000 );
+  Chip_RIT_Init( LPC_RITIMER );
+  Chip_RIT_SetTimerInterval( LPC_RITIMER, 3000 );
 }
 
 void RIT_IRQHandler( void )
 {
-	portBASE_TYPE xTaskWoken = pdFALSE ;
+  portBASE_TYPE xTaskWoken = pdFALSE ;
 
-	xTaskWoken = xSemaphoreGiveFromISR ( xBinarySemaphore, &xTaskWoken );
+  xSemaphoreGiveFromISR ( xBinarySemaphore, &xTaskWoken );
 
-	Chip_RIT_ClearInt( LPC_RITIMER );
+  Chip_RIT_ClearInt( LPC_RITIMER );
 }
