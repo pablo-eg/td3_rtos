@@ -44,7 +44,7 @@ int main(void)
   xSemaphoreTake( xBinarySemaphore, ( TickType_t ) 10 );
 
   xTaskCreate( vProducer, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
-  xTaskCreate( vConsumer, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+1, NULL );
+  xTaskCreate( vConsumer, NULL, configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+2, NULL );
 
   NVIC_EnableIRQ(RITIMER_IRQn);
 
