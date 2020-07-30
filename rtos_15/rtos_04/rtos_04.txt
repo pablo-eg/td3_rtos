@@ -1,0 +1,21 @@
+En la tarea ImprimeHora mostrada en la página 95 (4.5.1) del libro Sistemas
+Empotrados en Tiempo Real, ¿se podría solucionar el arbitraje del acceso al
+puerto serie cortando las interrupciones mientras se llama a SeriePuts() ? En
+caso afirmativo ¿existe alguna ventaja en el uso de semáforos?
+
+
+Se puede solucionar el acceso al puerto serie deshabilitando el planificador
+con vTaskSuspendScheduler(), utilizar el puerto serie y luego habilitar
+nuevamente el planificador con xTaskResumeScheduler().
+
+La ventaja en el uso del semáforo es que no se corre el riesgo de no cumplir
+con los tiempos. Además, si el planificador se encuentra suspendido un periodo
+de tiempo largo (que en la practica pueden ser milisegundos), en muchas de las
+tareas bloqueas habrán expirados sus tiempos y cuando el planificador vuelva
+a estar habilitado todas estas tareas bloqueandas pasarán al mismo tiempo al
+estado listas.En consecuencia, se corre el riesgo de no cumplir con los tiempos
+requeridos por todas las tareas.
+
+En conclusión, la deshabilitación y habilitación de interrupciones o del
+planificador como método de exclusión mutua no son aconsejables y siempre que se
+utilicen se debe procurar que la secciones críticas sean lo más cortas posibles.
