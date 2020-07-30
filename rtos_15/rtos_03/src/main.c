@@ -61,18 +61,13 @@ static void vTask2( void *pvParameters )
 
     for( ;; )
     {
-      //printf("Ticks before forDelay = %d\n", xTaskGetTickCount());
       for( ul2 = 0; ul2 < 2; ul2++ )
       {
       	for( ul = 0; ul < mainDELAY_LOOP_COUNT; ul++ ) //aprox 800 msx
       	{
-        //for( ul2 = 0; ul2 < 2; ul2++ )
-        //{
 
-        //}
         }
       }
-      //printf("Ticks after forDelay = %d\n", xTaskGetTickCount());
       vPrintString( "Medium priority vTask2 running     |\r\n" );
       Board_LED_Toggle(4); /* Red */
       vTaskDelay( xDelay200ms );
