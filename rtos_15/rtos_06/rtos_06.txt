@@ -1,0 +1,31 @@
+En la sección 4.8 del libro Sistemas Empotrados en Tiempo Real, se discuten tres
+alternativas para realizar llamadas al sistema operativo desde las rutinas de
+atención a interrupción. Discuta las ventajas e inconvenientes de cada una de
+estas alternativas en cuanto a la latencia y la facilidad de programación.
+
+
+1) Avisar al RTOS de la entrada y salida a la ISR.
+
+Proporciona facilidad en cuanto a la programación, ya que se añaden solo 2
+funciones a la API, una para avisar al sistema de la entrada en la rutina de
+interrupción y otra para avisar de la salida. Por esto mismo, presenta una
+latencia baja.
+
+2) El RTOS gestiona las interrupciones, es decir, cuando se produce una
+interrupción se ejecuta una rutina del sistema que ejecuta una ISR.
+
+Como la gestión de las interrupciones la realiza el RTOS, presenta una latencia
+mayor que los demás métodos. La programación es sencilla, ya que se las ISR se
+implementan como una tarea más.
+
+3) Existen funciones especiales para su llamada desde las ISR.
+
+Este método, que es el usado por FreeRTOS, añade a la API funciones especiales
+para ser llamadas desde dentro de la ISR que se diferencian de las normales en
+que no conmutan las tareas. Sigue siendo necesario llamar a una función para
+indicar la salida de la interrupción de forma que el sistema operativo ejecute
+el planificador y conmute a otra tarea de mayor prioridad que haya cambiado al
+estado “lista” como consecuencia de la ejecución de la rutina de interrupción.
+Tiene una latencia baja ya que cuando se produce la interrupción se atiende
+inmediatamente, pero la programación puede resultar complicada al haber
+funciones especiales para las ISR.
