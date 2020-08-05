@@ -19,6 +19,8 @@
 xSemaphoreHandle xBinarySemaphoreA;
 xSemaphoreHandle xBinarySemaphoreB;
 
+#define mainDELAY_LOOP_COUNT  ( 0xaaaaaa )
+
 static void vTask1 ( void *pvParameters );
 static void vTask2 ( void *pvParameters );
 static void vFatalError( void *pvParameters );
@@ -48,13 +50,19 @@ static void vTask1 ( void *pvParameters )
 {
    TickType_t xLastWakeTime = 0;
    const TickType_t xTimeOut = pdMS_TO_TICKS( 1000UL );
+   uint32_t ul, ul2;
 
    for( ;; )
    {
      xSemaphoreTake( xBinarySemaphoreA, xTimeOut );
      xSemaphoreTake( xBinarySemaphoreB, xTimeOut );
-     printf( "Running Task1. Delta Ticks = %d\r\n", xTaskGetTickCount() - xLastWakeTime );
-     xLastWakeTime = xTaskGetTickCount();
+     for( ul2 = 0; ul2 < 2; ul2++ )
+     {
+       for( ul = 0; ul < mainDELAY_LOOP_COUNT; ul++ ) //aprox 800 msx
+       {
+
+       }
+     }
      xSemaphoreGive( xBinarySemaphoreB );
      xSemaphoreGive( xBinarySemaphoreA );
    }
@@ -64,13 +72,19 @@ static void vTask2( void *pvParameters )
 {
   TickType_t xLastWakeTime = 0;
   const TickType_t xTimeOut = pdMS_TO_TICKS( 1000UL );
+  uint32_t ul, ul2;
 
   for( ;; )
   {
     xSemaphoreTake( xBinarySemaphoreB, xTimeOut );
     xSemaphoreTake( xBinarySemaphoreA, xTimeOut );
-    printf( "Running Task2. Delta Ticks = %d\r\n", xTaskGetTickCount() - xLastWakeTime );
-    xLastWakeTime = xTaskGetTickCount();
+    for( ul2 = 0; ul2 < 2; ul2++ )
+    {
+      for( ul = 0; ul < mainDELAY_LOOP_COUNT; ul++ ) //aprox 800 msx
+      {
+
+      }
+    }
     xSemaphoreGive( xBinarySemaphoreA );
     xSemaphoreGive( xBinarySemaphoreB );
   }
